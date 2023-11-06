@@ -2,6 +2,7 @@ package com.alibaba.fastjson.serializer;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.parser.ParserConfig;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,9 +17,12 @@ public class TestParse {
 
     private String jsonString;
 
+    private final ParserConfig parserConfig = new ParserConfig();
+
     @Before
     public void prepareJsonString() {
         TestBean bean = new TestBean();
+        parserConfig.setAutoTypeSupport(true);
         bean.setName("tester");
         JSONObject data = new JSONObject();
         data.put("key", "value");
@@ -29,7 +33,7 @@ public class TestParse {
     @Test
     public void testParse() {
         logger.info("parsing json string:" + jsonString);
-        TestBean testBean = (TestBean) JSON.parse(jsonString);
+        TestBean testBean = (TestBean) JSON.parse(jsonString, parserConfig);
         assert testBean.getData() != null;
         assert "tester".equals(testBean.getName());
         assert "value".equals(testBean.getData().getString("key"));
