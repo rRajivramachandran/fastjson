@@ -11,14 +11,29 @@ import java.util.Date;
 public class Issue2784 extends TestCase {
     public void test_for_issue() throws Exception {
         Model m = new Model();
-        m.time = java.time.LocalDateTime.now();
+        m.time = waitUntilZeroBeyondMillis();
+
         String str = JSON.toJSONString(m);
         assertEquals("{\"time\":"
                 + m.time.atZone(JSON.defaultTimeZone.toZoneId()).toInstant().toEpochMilli()
                 + "}", str);
-
         Model m1 = JSON.parseObject(str, Model.class);
         assertEquals(m.time, m1.time);
+    }
+
+    private static LocalDateTime waitUntilZeroBeyondMillis() throws InterruptedException {
+        while (true) {
+            LocalDateTime currentTime = LocalDateTime.now();
+            ZonedDateTime zoned = currentTime.atZone(JSON.defaultTimeZone.toZoneId());
+
+            System.out.println("SEC:"+zoned.toInstant().getNano() % 1000000);
+            if (zoned.toInstant().getNano() % 1000000 == 0 ) {
+                return currentTime;
+            }
+
+            // Wait for a short interval before checking again
+            Thread.sleep(10);
+        }
     }
 
     public void test_for_issue_1() throws Exception {

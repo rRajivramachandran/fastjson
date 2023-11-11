@@ -96,8 +96,8 @@
                 <version>3.8.0</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -154,7 +154,7 @@
                 <version>3.0.0-M5</version>
                 <configuration>
                     <includes>
-                        <include>**/CustomSuiteTest.java</include>
+                        <include>**/bvt/**/*.java</include>
                     </includes>
                 </configuration>
             </plugin>
